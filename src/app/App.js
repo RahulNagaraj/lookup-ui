@@ -8,8 +8,8 @@ import {blueGrey} from "@mui/material/colors";
 
 import Header from "./Header";
 import Home from "./Home";
-import Login from "./Login";
 import Details from "./Details";
+import Footer from "./Footer";
 
 const theme = createTheme({
     palette: {
@@ -41,13 +41,12 @@ function App() {
                         <Route exact path="/">
                             <Home />
                         </Route>
-                        <Route path="/login">
-                            <Login />
-                        </Route>
                         <Route path="/detail">
                             <Details />
                         </Route>
                     </Switch>
+
+                    <Footer />
                 </div>
             </Router>
         </ThemeProvider>

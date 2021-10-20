@@ -16,10 +16,14 @@ const useStyles = makeStyles({
         '&:hover': {
             backgroundColor: red[500],
         },
+        '&:active': {
+            backgroundColor: red[700],
+        },
         '&:focus': {
             backgroundColor: red[700],
         }
-    }})
+    }
+})
 
 const filters = [
     {title: 'Balcony', key: 'balcony'},
@@ -36,7 +40,8 @@ const services = [
             {title: 'Includes roof drilling'},
             {title: 'Price does not include spare part costs'}
         ],
-        type: 'balcony'
+        type: 'balcony',
+        imagePath: 'clothes_hanger.jpg',
     },
     {
         title: 'Clothes hanger installation (Wall/Door)',
@@ -45,7 +50,8 @@ const services = [
             {title: 'Excludes roof drilling'},
             {title: 'Price does not include spare part costs'}
         ],
-        type: 'balcony'
+        type: 'balcony',
+        imagePath: 'wall-mounted-hanger.jpg',
     },
     {
         title: 'Clothes hanger installation (Wall/Door)',
@@ -54,7 +60,8 @@ const services = [
             {title: 'Excludes roof drilling'},
             {title: 'Price does not include spare part costs'}
         ],
-        type: 'window'
+        type: 'window',
+        imagePath: 'wall-mounted-hanger.jpg',
     },
     {
         title: 'Clothes hanger installation (Wall/Door)',
@@ -63,7 +70,8 @@ const services = [
             {title: 'Excludes roof drilling'},
             {title: 'Price does not include spare part costs'}
         ],
-        type: 'door'
+        type: 'door',
+        imagePath: 'wall-mounted-hanger.jpg',
     },
 ]
 
@@ -76,7 +84,7 @@ const Details = () => {
     }
 
     return (
-        <Container sx={{ my: 5 }}>
+        <Container sx={{ my: 10 }}>
             <Grid container spacing={2}>
                 <Grid item sm={2}>
                     <Box display="flex" flexDirection="column" justifyContent={"flex-end"} sx={{textAlign: 'right', display: 'block'}}>
@@ -97,15 +105,14 @@ const Details = () => {
                     <Box>
                         <Grid container spacing={2}>
                             {filteredServices.map(service => (
-
                                 <Grid item sm={4}>
-                                    <Card sx={{ maxWidth: 345, maxHeight: 350 }}>
+                                    <Card sx={{ maxWidth: 345, maxHeight: 400 }}>
                                         <CardActionArea>
                                             <CardMedia
                                                 component="img"
-                                                height="140"
-                                                image="/static/images/cards/contemplative-reptile.jpg"
-                                                alt="green iguana"
+                                                height="175"
+                                                image={`static/images/${service.imagePath}`}
+                                                alt=""
                                             />
                                             <CardContent>
                                                 <Typography gutterBottom variant="h5" component="div">

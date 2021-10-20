@@ -1,23 +1,23 @@
 import React from "react";
-import {alpha, styled, ThemeProvider} from '@mui/material/styles';
+import {alpha, styled} from '@mui/material/styles';
 import {
-    BottomNavigation, BottomNavigationAction,
-    Box, Card, CardActionArea, CardContent, CardMedia,
-    Container, createTheme,
+    Autocomplete,
+    Box, Card, CardActionArea, CardActions, CardContent, CardMedia,
+    Container,
     FormControl,
-    Grid, IconButton,
+    Grid,
     InputBase,
     InputLabel,
     MenuItem,
-    Paper,
-    Select,
+    Select, TextField,
     Typography
 } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import {blueGrey} from "@mui/material/colors";
+import {blue, blueGrey, lightBlue} from "@mui/material/colors";
 import {useHistory} from "react-router-dom";
+import {makeStyles} from "@mui/styles";
+import FiberNewOutlinedIcon from '@mui/icons-material/FiberNewOutlined';
 
-const location = [
+const locations = [
     {
         value: 'Chicago',
     },
@@ -28,53 +28,63 @@ const location = [
         value: 'San Fransisco',
     },
     {
-        value: 'Seatle',
+        value: 'Seattle',
     },
 ];
 
 const services = [
     {
         name: 'Electricians',
-        key: 'electricians'
+        key: 'electricians',
+        imagePath: 'electician logo.png'
     },
     {
         name: 'Plumbers',
-        key: 'plumbers'
+        key: 'plumbers',
+        imagePath: 'plumber logo.jpg'
     },
     {
         name: 'Carpenters',
-        key: 'carpenters'
+        key: 'carpenters',
+        imagePath: 'carpenter logo.png'
     },
     {
         name: 'Painters',
-        key: 'painters'
+        key: 'painters',
+        imagePath: 'painter logo.jpg'
     },
     {
         name: 'Appliance Repair',
-        key: 'applicanceRepair'
+        key: 'applicanceRepair',
+        imagePath: 'appliance repair logo.jpg'
     },
     {
         name: 'Pest Control',
-        key: 'pestControl'
+        key: 'pestControl',
+        imagePath: 'pestcontrollogo.png'
     },
     {
-        name: 'Personal Chefs',
-        key: 'personalChefs'
+        name: 'AC Repair',
+        key: 'acRepair',
+        imagePath: 'ac repair logo.jpg'
     }
 ];
 
 const offers = [
     {
         title: 'Kitchen Cleaning',
-        offer: 'Upto $50 off'
+        offer: 'Upto $50 off',
+        imagePath: 'Kitchen cleaning.jpg'
     },
     {
         title: 'Pest Control',
-        offer: 'Flat $50 off'
+        offer: 'Flat $50 off',
+        imagePath: 'pest control.jpg'
     },
     {
         title: 'Appliance Repair',
-        offer: 'Starts at $99'
+        offer: 'Starts at $99',
+        imagePath: 'appliance repair.jpg'
     }
 ];
 
@@ -82,14 +92,18 @@ const trending = [
     {
         name: 'Air Conditioner',
         type: 'product',
+        recent: 'new',
+        imagePath: 'ac repair.jpg'
     },
     {
         name: 'Plumbing',
         type: 'services',
+        imagePath: 'plumber service.jpg',
     },
     {
         name: 'Electrical',
-        type: 'services'
+        type: 'services',
+        imagePath: 'elecrical service.jpg'
     }
 ];
 
@@ -97,24 +111,41 @@ const recommendedEvents = [
     {
         title: 'Marathon 21k',
         type: 'sports',
-        location: 'Chicago'
+        location: 'Chicago',
+        imagePath: 'marathon event.jpg',
     },
     {
-        title: 'Haloween Night',
+        title: 'Halloween Night',
         type: 'social',
         location: 'New York',
+        imagePath: 'halloween events.jpg'
     },
     {
         title: 'Christmas Carol',
         type: 'social',
-        location: 'Seatle',
+        location: 'Seattle',
+        imagePath: 'christmas events.jpg'
     },
     {
         title: 'Easter Day',
         type: 'social',
-        location: 'San Fransisco'
+        location: 'San Fransisco',
+        imagePath: 'easter events.jpg'
     }
 ];
+
+const productsServices = [
+    { title: 'Air Conditioner' },
+    { title: 'Water Heater' },
+    { title: 'Washing Machine' },
+    { title: 'Oven/Microwave' },
+    { title: 'Plumbing' },
+    { title: 'Electrical' },
+    { title: 'Pest Control' },
+    { title: 'Carpentry' },
+    { title: 'Painting' },
+    { title: 'Kitchen Cleaning' },
+]
 
 
 const Search = styled('div')(({theme}) => ({
@@ -149,29 +180,33 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        paddingTop: `calc(1em + ${theme.spacing(0)})`,
+        paddingTop: '20px',
         transition: theme.transitions.create('width'),
         width: '100%',
     },
 }));
 
-const StyledPaper = styled(Paper)(({theme}) => ({
-    ...theme.typography.body2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    lineHeight: '60px',
+const useStyles = makeStyles(theme => ({
+    margin: {
+        backgroundColor: theme.palette.common.white,
+        margin: theme.spacing(0),
+        width: "100%",
+    },
 }));
 
-export default () => {
+const Home = () => {
+    const classes = useStyles();
     let history = useHistory();
 
-    const handleCardClick = () => {
-        history.push("/detail");
-    }
+    const [location, setLocation] = React.useState("");
+
+    const handleCardClick = () => history.push("/detail");
+
+    const handleLocation = (name) => setLocation(name);
 
     return (
-        <Container maxWidth="xl" disableGutters>
-            <Box sx={{ bgcolor: blueGrey[100], height: '45vh'}}>
+        <Container id="home" maxWidth="xl" disableGutters>
+            <Box sx={{ backgroundColor: blueGrey[100], height: '45vh'}}>
                 <Box sx={{mx: 5, alignItems: 'center', mb: 5}} textAlign={"center"}>
                     <Typography variant="h1" component="div" gutterBottom>
                         Lookup
@@ -182,62 +217,98 @@ export default () => {
                     </Typography>
                 </Box>
                 <Box display="flex" justifyContent="center">
-                    <FormControl variant="standard" sx={{m: 1, minWidth: 200}}>
-                        <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                    <FormControl variant="standard" sx={{ minWidth: 200, mr: 1 }}>
+                        <InputLabel sx={{ pl: 1 }} id="demo-simple-select-label">Location</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={"Chicago"}
+                            value={location}
                             label="Location"
-                            onChange={() => {
-                            }}
+                            onChange={(event) => handleLocation(event.target.value)}
+                            variant="filled"
                         >
-                            {location.map(loc => <MenuItem value={loc.value}>{loc.value}</MenuItem>)}
+                            {locations.map(loc => <MenuItem key={loc.value} value={loc.value}>{loc.value}</MenuItem>)}
                         </Select>
                     </FormControl>
 
-                    <Search>
+                    {/*<Search>
                         <SearchIconWrapper>
                             <SearchIcon/>
                         </SearchIconWrapper>
                         <StyledInputBase
-                            placeholder="Search for a product..."
+                            placeholder="Search for a service/product..."
                             inputProps={{'aria-label': 'search'}}
                         />
-                    </Search>
+                    </Search>*/}
+
+                    <Autocomplete
+                        id="free-solo-2-demo"
+                        disableClearable
+                        autoHighlight
+                        autoSelect
+                        options={productsServices.map(film => film.title)}
+                        sx={{ width: '40vw', ml: 1 }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Search"
+                                placeholder="Search for a service/product..."
+                                InputProps={{
+                                    ...params.InputProps,
+                                    type: 'search'
+                                }}
+                                variant="filled"
+                            />
+                        )}
+                    />
+
+                    {/*<Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={[]}
+                        sx={{ width: 300 }}
+
+                        renderInput={(params) =>
+                            <TextField {...params}
+                                label="Search"
+                                       variant="filled"
+                            />}
+                    />*/}
+
                 </Box>
             </Box>
-            <Box sx={{p: 5}}>
+            <Box sx={{p: 5}} id="services">
                 <Container sx={{marginTop: 5, marginBottom: 5}}>
                     <Typography textAlign={"center"} gutterBottom variant="h4" component="div">
                         Services
                     </Typography>
 
-                        <Grid container spacing={2}>
-                            {services.map(service => (
-                                <Grid item md={2} key={service.key}>
-                                    <Card onClick={handleCardClick}>
-                                        <CardActionArea>
-                                            <CardMedia
-                                                component="img"
-                                                height="100"
-                                                width="100"
-                                                image="/static/images/a.jpg"
-                                                alt={service.name}
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="body1" component="div">
-                                                    {service.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
+                    <Grid container spacing={2}>
+                        {services.map(service => (
+
+                            <Grid item md={2} key={service.key}>
+                                <Card onClick={handleCardClick}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            component="img"
+                                            height="150"
+                                            width="250"
+                                            image={`/static/images/${service.imagePath}`}
+                                            alt={service.name}
+                                        />
+                                        <CardContent>
+                                            <Typography gutterBottom variant="body1" component="div">
+                                                {service.name}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Container>
             </Box>
-            <Box sx={{bgcolor: blueGrey[200], p: 5}}>
+            <Box sx={{backgroundColor: blueGrey[200], p: 5}} id="trending">
                 <Container sx={{my: 5}}>
                     <Typography textAlign={"center"} gutterBottom variant="h4" component="div">
                         Trending
@@ -249,15 +320,24 @@ export default () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="100"
-                                            width="100"
-                                            image="/static/images/a.jpg"
+                                            height="200"
+                                            width="250"
+                                            image={`/static/images/${trend.imagePath}`}
                                             alt={""}
                                         />
                                         <CardContent>
-                                            <Typography gutterBottom variant="body1" component="div">
-                                                {trend.name}
-                                            </Typography>
+                                            <Box display="flex" justifyContent="space-between" textAlign="center">
+                                                <Typography gutterBottom variant="body1" component="div">
+                                                    {trend.name}
+                                                </Typography>
+                                                {trend.recent === 'new' && (
+                                                    <CardActions disableSpacing sx={{ p: 0, mt: -2 }}>
+                                                        <FiberNewOutlinedIcon fontSize="large" color={"error"} />
+                                                    </CardActions>
+                                                )}
+
+                                            </Box>
+
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
@@ -266,7 +346,7 @@ export default () => {
                     </Grid>
                 </Container>
             </Box>
-            <Box sx={{p: 5}}>
+            <Box sx={{p: 5}} id={"offers"}>
                 <Container sx={{my: 5}}>
                     <Typography textAlign={"center"} gutterBottom variant="h4" component="div">
                         Best Offers
@@ -278,16 +358,16 @@ export default () => {
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="100"
-                                            width="100"
-                                            image="/static/images/a.jpg"
+                                            height="200"
+                                            width="250"
+                                            image={`/static/images/${offer.imagePath}`}
                                             alt={""}
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="body1" component="div">
                                                 {offer.title}
                                             </Typography>
-                                            <Typography gutterBottom variant="caption" display="block">
+                                            <Typography variant="caption" display="block" sx={{ color: blue['A200'] }}>
                                                 {offer.offer}
                                             </Typography>
                                         </CardContent>
@@ -298,26 +378,26 @@ export default () => {
                     </Grid>
                 </Container>
             </Box>
-            <Box sx={{bgcolor: blueGrey[200], p: 5}}>
+            <Box sx={{backgroundColor: blueGrey[200], p: 5}} id="recommended">
                 <Container sx={{my: 5}}>
                     <Typography textAlign={"center"} gutterBottom variant="h4" component="div">
                         Recommended Events
                     </Typography>
                     <Grid container spacing={2}>
-                        {recommendedEvents.map(recommened => (
-                            <Grid item md={3} key={recommened.title}>
+                        {recommendedEvents.map(event => (
+                            <Grid item md={3} key={event.title}>
                                 <Card>
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"
-                                            height="100"
-                                            width="100"
-                                            image="/static/images/a.jpg"
+                                            height="150"
+                                            width="250"
+                                            image={`/static/images/${event.imagePath}`}
                                             alt={""}
                                         />
                                         <CardContent>
                                             <Typography gutterBottom variant="body1" component="div">
-                                                `{recommened.title} at {recommened.location}`
+                                                {event.title} at <em>{event.location}</em>
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
@@ -327,18 +407,8 @@ export default () => {
                     </Grid>
                 </Container>
             </Box>
-            <Container sx={{mt: 10}}>
-                <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-                    <BottomNavigation
-                        sx={{ bgcolor: blueGrey[50] }}
-                        showLabels
-                        value={""}
-                        onChange={() => {}}
-                    >
-                        <Typography sx={{m: 2}} variant="body1" component="div">Made with ❤ using React</Typography>
-                    </BottomNavigation>
-                </Paper>
-            </Container>
         </Container>
     );
 }
+
+export default Home;
